@@ -1,0 +1,38 @@
+{
+  "name": "web-crypto-chat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "is a demo using Web Crypto API",
+  "scripts": {
+    "client": "budo client.js --dir . --serve bundle.js --open --live --pushstate -- -t babelify",
+    "server": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fibo/web-crypto-chat.git"
+  },
+  "keywords": [
+    "demo",
+    "cryptography",
+    "react",
+    "web",
+    "chat"
+  ],
+  "author": {
+    "name": "Gianluca Casati",
+    "url": "http://g14n.info"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fibo/web-crypto-chat/issues"
+  },
+  "homepage": "https://github.com/fibo/web-crypto-chat#readme",
+  "dependencies": {
+    "98.css": "^0.1.16",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "zeroconf-redux": "^5.9.0"
+  }
+}
