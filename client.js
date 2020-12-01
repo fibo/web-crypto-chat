@@ -2,20 +2,54 @@ import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey
-const generateKey = () => {
-  return window.crypto.subtle.generateKey({
-    name: 'AES-GCM',
-    length: 256,
-  }, true, ['encrypt', 'decrypt'])
-}
+// const generateKey = (algorithm = 'AES-GCM') => {
+//   console.log('algorithm', algorithm)
+//   return window.crypto.subtle.generateKey({
+//     name: algorithm,
+//     length: 256,
+//   }, true, ['encrypt', 'decrypt'])
+// }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#Supported_algorithms
 const supportedAlgorithms = ['RSA-OAEP', 'AES-CTR', 'AES-CBC', 'AES-GCM']
 
 function App () {
-  const [algorithm, setAlgorythm] = useState('')
+  const [algorithm, setAlgorithm] = useState('')
+  const [localKey, setLocalKey] = useState('')
+  const [inputText, setInputText] = useState('')
   const [messageHistory, setMessageHistory] = useState([])
   const [message, setMessage] = useState('')
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState('')
+
+  useEffect(() => {
+    fetch('http://localhost:3000/key').then(
+      (response) => response.json()
+    ).then(
+      (data) => {
+        const rawKey = new TextEncoder(data.key)
+
+        crypto.subtle.importKey(
+          "raw",
+          rawKey,
+          { name: "aes-cbc", length: 128 }, true, ["encrypt", "decrypt"]
+        ).then(
+          (localKey) => {
+            setLocalKey(localKey)
+          }
+        )
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    if (algorithm) {
+      const foo = generateKey(algorithm)
+      console.log(foo)
+      // generateKey(selectedAlgorithm).then((data) => {
+      //   console.log(data)
+      // })
+    }
+  }, [algorithm])
 
   useEffect(() => {
     if (!message) return
@@ -46,13 +80,19 @@ function App () {
       </div>
 
       <div className="window-body">
-        <select style={{'margin': '1em'}}>
+        <select style={{'margin': '1em'}} onChange={(value) => { setSelectedAlgorithm(event.target.value) }}>
           {supportedAlgorithms.map((algorithm, i) => (
             <option key={i} value={algorithm}>{algorithm}</option>
           ))}
         </select>
 
-        <button>Generate Key</button>
+        <button
+          onClick={() => {
+            if (selectedAlgorithm) {
+              setAlgorithm(selectedAlgorithm)
+            }
+          }}
+        >Generate Key</button>
 
         <div className="field-row" style={{'margin': '1em'}}>
           <label htmlFor="message">Message</label>

@@ -7,6 +7,10 @@ const app = new express()
 app.use(bodyParser.json())
 app.use(cors())
 
+app.get('/key', (req, res) => {
+  res.send({ key: '1234567890+abcdefghijk==' })
+})
+
 app.post('/message', (req, res) => {
   const { message } = req.body
 

@@ -4,7 +4,7 @@
   "private": true,
   "description": "is a demo using Web Crypto API",
   "scripts": {
-    "client": "budo client.js --dir . --serve bundle.js --open --live --pushstate -- -t babelify",
+    "client": "budo client.js --host localhost --dir . --serve bundle.js --open --live --pushstate -- -t babelify",
     "server": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
